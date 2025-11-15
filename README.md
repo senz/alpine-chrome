@@ -4,7 +4,14 @@
 [![All Contributors](https://img.shields.io/badge/all_contributors-39-orange.svg?style=flat-square)](#-contributors)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
-# Available registries
+# ⚠️ IMPORTANT ⚠️
+
+The creator and maintainer of this repo is no longer working for Zenika org. 
+As the creator, @jlandure don't have any support to maintain this image. If you are interested by this image, feel free to support.
+
+DockerHub doesn't support the move of repo between orgs... So, the images pushed to Zenika DockerHub org is no longer linked to this repo. 
+
+# Available registries : ⚠️ may be deleted or obsolete
 
 Following the changes with the [Rate Limiting on Docker Hub](https://www.docker.com/increase-rate-limits). [Tweet here for more information in 🇫🇷](https://twitter.com/jlandure/status/1322474352554770432)
 - On the [Docker Hub](https://hub.docker.com/r/zenika/alpine-chrome) without any prefix: `zenika/alpine-chrome`
@@ -15,7 +22,7 @@ Following the changes with the [Rate Limiting on Docker Hub](https://www.docker.
   - Asia: `asia.gcr.io/zenika-hub/alpine-chrome`
   - US: `us.gcr.io/zenika-hub/alpine-chrome`
 
-# Supported tags and respective `Dockerfile` links
+# Supported tags and respective `Dockerfile` links : ⚠️ may be deleted or obsolete
 
 - `latest`, `100` [(Dockerfile)](https://github.com/Zenika/alpine-chrome/blob/master/Dockerfile)
 - `with-node`, `100-with-node`, `100-with-node-16` [(Dockerfile)](https://github.com/Zenika/alpine-chrome/blob/master/with-node/Dockerfile)
