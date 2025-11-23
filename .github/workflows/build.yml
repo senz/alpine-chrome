@@ -19,6 +19,7 @@ jobs:
     secrets: inherit
 
   build-with-node:
+    if: ${{ vars.BUILD_WITH_NODE == 'true' }}
     needs:
       - build-base
     uses: ./.github/workflows/build-one.yml
@@ -29,6 +30,7 @@ jobs:
     secrets: inherit
 
   build-with-deno:
+    if: ${{ vars.BUILD_WITH_DENO == 'true' }}
     needs:
       - build-base
     uses: ./.github/workflows/build-one.yml
@@ -39,6 +41,7 @@ jobs:
     secrets: inherit
 
   build-with-chromedriver:
+    if: ${{ vars.BUILD_WITH_CHROMEDRIVER == 'true' }}
     needs:
       - build-base
     uses: ./.github/workflows/build-one.yml
@@ -49,6 +52,7 @@ jobs:
     secrets: inherit
 
   build-with-playwright:
+    if: ${{ vars.BUILD_WITH_PLAYWRIGHT == 'true' }}
     needs:
       - build-with-node
     uses: ./.github/workflows/build-one.yml
@@ -59,6 +63,7 @@ jobs:
     secrets: inherit
 
   build-with-puppeteer:
+    if: ${{ vars.BUILD_WITH_PUPPETEER == 'true' }}
     needs:
       - build-with-node
     uses: ./.github/workflows/build-one.yml
@@ -69,6 +74,7 @@ jobs:
     secrets: inherit
 
   build-with-puppeteer-xvfb:
+    if: ${{ vars.BUILD_WITH_PUPPETEER_XVFB == 'true' }}
     needs:
       - build-with-puppeteer
     uses: ./.github/workflows/build-one.yml
@@ -79,6 +85,7 @@ jobs:
     secrets: inherit
 
   build-with-selenoid:
+    if: ${{ vars.BUILD_WITH_SELENOID == 'true' }}
     needs:
       - build-with-chromedriver
     uses: ./.github/workflows/build-one.yml
