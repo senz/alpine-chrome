@@ -102,8 +102,10 @@ jobs:
           fi
           CHROMIUM_VERSION=${BASH_REMATCH[1]}
           TAG=${CHROMIUM_VERSION}
+          TAG_WITH_BUILD=${CHROMIUM_VERSION}-${{ github.run_id }}
           if [[ '${{ inputs.folder }}' != '.' ]]; then
             TAG=${TAG}-${{ inputs.tag }}
+            TAG_WITH_BUILD=${TAG_WITH_BUILD}-${{ inputs.tag }}
           fi
           if [[ '${{ inputs.folder }}' == 'with-chromedriver' ]]; then
             CURRENT_CHROMEDRIVER_VERSION=$(docker container run --rm --entrypoint "" ${IMAGE_NAME} chromedriver --version)
@@ -117,8 +119,10 @@ jobs:
           elif [[ '${{ inputs.folder }}' == 'with-selenoid' ]]; then
             CURRENT_SELENOID_VERSION=$(docker container run --rm --entrypoint "" ${IMAGE_NAME} selenoid -version)
             TAG=${TAG}-${CURRENT_SELENOID_VERSION:14:4}
+            TAG_WITH_BUILD=${TAG_WITH_BUILD}-${CURRENT_SELENOID_VERSION:14:4}
           fi
           echo "value=${TAG}" >> $GITHUB_OUTPUT
+          echo "value_with_build=${TAG_WITH_BUILD}" >> $GITHUB_OUTPUT
 
       - name: Login to GitHub Container registry
         if: ${{ github.ref == 'refs/heads/master' }}
@@ -139,6 +143,7 @@ jobs:
         env:
           IMAGE_NAME: ${{ env.IMAGE_REPOSITORY }}:${{ inputs.tag }}
           IMAGE_VERSIONED_NAME: ${{ env.IMAGE_REPOSITORY }}:${{ steps.tag.outputs.value }}
+          IMAGE_VERSIONED_WITH_BUILD_NAME: ${{ env.IMAGE_REPOSITORY }}:${{ steps.tag.outputs.value_with_build }}
         uses: docker/build-push-action@v5
         with:
           context: ${{ inputs.folder }}
@@ -147,6 +152,7 @@ jobs:
           tags: |
             ghcr.io/senz/${{ env.IMAGE_NAME }}
             ghcr.io/senz/${{ env.IMAGE_VERSIONED_NAME }}
+            ghcr.io/senz/${{ env.IMAGE_VERSIONED_WITH_BUILD_NAME }}
           push: true
           cache-from: type=gha
           cache-to: type=gha

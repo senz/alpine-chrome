@@ -94,3 +94,79 @@ jobs:
       tag: with-selenoid
       parent: with-chromedriver
     secrets: inherit
+
+  create-release:
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' && always() && needs.build-base.result == 'success' }}
+    needs:
+      - build-base
+      - build-with-node
+      - build-with-deno
+      - build-with-chromedriver
+      - build-with-playwright
+      - build-with-puppeteer
+      - build-with-puppeteer-xvfb
+      - build-with-selenoid
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download base image artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: alpine-chrome-latest
+
+      - name: Load base image
+        run: |
+          docker image load --input alpine-chrome-latest.tar.gz
+
+      - name: Extract Chrome version and generate release tag
+        id: tag
+        env:
+          IMAGE_NAME: ghcr.io/senz/alpine-chrome:latest
+          CHROMIUM_VERSION_REGEXP: 'Chromium ([0-9]+)\.'
+        run: |
+          CURRENT_CHROMIUM_VERSION=$(docker container run --rm --entrypoint '' ${IMAGE_NAME} chromium-browser --version)
+          if [[ ${CURRENT_CHROMIUM_VERSION} =~ ${CHROMIUM_VERSION_REGEXP} ]]; then
+            echo "Successfully extracted Chromium version: ${BASH_REMATCH[1]}"
+          else
+            echo "Cannot extract Chromium version from '${CURRENT_CHROMIUM_VERSION}'" >&2
+            exit 1
+          fi
+          CHROMIUM_VERSION=${BASH_REMATCH[1]}
+          TAG="${CHROMIUM_VERSION}-${{ github.run_id }}"
+          echo "tag=${TAG}" >> $GITHUB_OUTPUT
+          echo "chromium_version=${CHROMIUM_VERSION}" >> $GITHUB_OUTPUT
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.tag.outputs.tag }}
+          name: Chrome ${{ steps.tag.outputs.chromium_version }} - Build ${{ github.run_id }}
+          body: |
+            ## Alpine Chrome Docker Images
+
+            **Chrome Version:** ${{ steps.tag.outputs.chromium_version }}
+            **Build ID:** ${{ github.run_id }}
+            **Commit:** ${{ github.sha }}
+
+            ### Available images:
+            - `ghcr.io/senz/alpine-chrome:latest`
+            - `ghcr.io/senz/alpine-chrome:${{ steps.tag.outputs.chromium_version }}`
+            - `ghcr.io/senz/alpine-chrome:with-node` ${{ vars.BUILD_WITH_NODE == 'true' && '✓' || '(disabled)' }}
+            - `ghcr.io/senz/alpine-chrome:with-deno` ${{ vars.BUILD_WITH_DENO == 'true' && '✓' || '(disabled)' }}
+            - `ghcr.io/senz/alpine-chrome:with-chromedriver` ${{ vars.BUILD_WITH_CHROMEDRIVER == 'true' && '✓' || '(disabled)' }}
+            - `ghcr.io/senz/alpine-chrome:with-playwright` ${{ vars.BUILD_WITH_PLAYWRIGHT == 'true' && '✓' || '(disabled)' }}
+            - `ghcr.io/senz/alpine-chrome:with-puppeteer` ${{ vars.BUILD_WITH_PUPPETEER == 'true' && '✓' || '(disabled)' }}
+            - `ghcr.io/senz/alpine-chrome:with-puppeteer-xvfb` ${{ vars.BUILD_WITH_PUPPETEER_XVFB == 'true' && '✓' || '(disabled)' }}
+            - `ghcr.io/senz/alpine-chrome:with-selenoid` ${{ vars.BUILD_WITH_SELENOID == 'true' && '✓' || '(disabled)' }}
+
+            ### Usage:
+            ```bash
+            docker pull ghcr.io/senz/alpine-chrome:${{ steps.tag.outputs.chromium_version }}
+            ```
+          draft: false
+          prerelease: false
+          generate_release_notes: true
