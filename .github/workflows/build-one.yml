@@ -30,7 +30,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -52,7 +52,7 @@ jobs:
 
       - name: Download parent image artifact
         if: ${{ inputs.parent != '' }}
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v6
         with:
           name: ${{ env.IMAGE_REPOSITORY }}-${{ inputs.parent }}
 
@@ -62,7 +62,7 @@ jobs:
           docker image load --input ${{ env.IMAGE_REPOSITORY }}-${{ inputs.parent }}.tar.gz
 
       - name: Build Docker image
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: ${{ inputs.folder }}
           load: true
@@ -80,7 +80,7 @@ jobs:
           docker image save ghcr.io/senz/${{ env.IMAGE_REPOSITORY }}:${{ inputs.tag }} | gzip > ${{ env.IMAGE_REPOSITORY }}-${{ inputs.tag }}.tar.gz
 
       - name: Upload image artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: ${{ env.IMAGE_REPOSITORY }}-${{ inputs.tag }}
           path: ${{ env.IMAGE_REPOSITORY }}-${{ inputs.tag }}.tar.gz
@@ -144,7 +144,7 @@ jobs:
           IMAGE_NAME: ${{ env.IMAGE_REPOSITORY }}:${{ inputs.tag }}
           IMAGE_VERSIONED_NAME: ${{ env.IMAGE_REPOSITORY }}:${{ steps.tag.outputs.value }}
           IMAGE_VERSIONED_WITH_BUILD_NAME: ${{ env.IMAGE_REPOSITORY }}:${{ steps.tag.outputs.value_with_build }}
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: ${{ inputs.folder }}
           platforms: linux/amd64,linux/arm64
