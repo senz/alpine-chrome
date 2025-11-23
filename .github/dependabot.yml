@@ -1,0 +1,169 @@
+version: 2
+updates:
+  # Dockerfile dependencies
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+      - "docker"
+    groups:
+      docker-dependencies:
+        patterns:
+          - "*"
+
+  # GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+      - "github-actions"
+    groups:
+      github-actions:
+        patterns:
+          - "*"
+
+  # npm - with-puppeteer
+  - package-ecosystem: "npm"
+    directory: "/with-puppeteer"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+      - "npm"
+    groups:
+      npm-with-puppeteer:
+        patterns:
+          - "*"
+
+  # npm - with-playwright
+  - package-ecosystem: "npm"
+    directory: "/with-playwright"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+      - "npm"
+    groups:
+      npm-with-playwright:
+        patterns:
+          - "*"
+
+  # npm - with-puppeteer-xvfb
+  - package-ecosystem: "npm"
+    directory: "/with-puppeteer-xvfb"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+      - "npm"
+    groups:
+      npm-with-puppeteer-xvfb:
+        patterns:
+          - "*"
+
+  # Dockerfile - with-chromedriver
+  - package-ecosystem: "docker"
+    directory: "/with-chromedriver"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+      - "docker"
+    groups:
+      docker-with-chromedriver:
+        patterns:
+          - "*"
+
+  # Dockerfile - with-deno
+  - package-ecosystem: "docker"
+    directory: "/with-deno"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+      - "docker"
+    groups:
+      docker-with-deno:
+        patterns:
+          - "*"
+
+  # Dockerfile - with-node
+  - package-ecosystem: "docker"
+    directory: "/with-node"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+      - "docker"
+    groups:
+      docker-with-node:
+        patterns:
+          - "*"
+
+  # Dockerfile - with-playwright
+  - package-ecosystem: "docker"
+    directory: "/with-playwright"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+      - "docker"
+    groups:
+      docker-with-playwright:
+        patterns:
+          - "*"
+
+  # Dockerfile - with-puppeteer
+  - package-ecosystem: "docker"
+    directory: "/with-puppeteer"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+      - "docker"
+    groups:
+      docker-with-puppeteer:
+        patterns:
+          - "*"
+
+  # Dockerfile - with-puppeteer-xvfb
+  - package-ecosystem: "docker"
+    directory: "/with-puppeteer-xvfb"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+      - "docker"
+    groups:
+      docker-with-puppeteer-xvfb:
+        patterns:
+          - "*"
+
+  # Dockerfile - with-selenoid
+  - package-ecosystem: "docker"
+    directory: "/with-selenoid"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+      - "docker"
+    groups:
+      docker-with-selenoid:
+        patterns:
+          - "*"
