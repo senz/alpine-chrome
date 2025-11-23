@@ -1,6 +1,6 @@
 #!/bin/sh -e
 
-IMAGE_NAME=${IMAGE_NAME:-zenika/alpine-chrome:with-puppeteer}
+IMAGE_NAME=${IMAGE_NAME:-ghcr.io/senz/alpine-chrome:with-puppeteer}
 export IMAGE_NAME
 
 DIR=$(cd $(dirname $0) && pwd)
